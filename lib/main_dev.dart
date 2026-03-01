@@ -1,3 +1,5 @@
+import 'package:practice/data/repositories/Setting/appSetting_repository_mock.dart';
+// import 'package:practice/data/repositories/Setting/appSettings_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:nested/nested.dart';
 
@@ -17,7 +19,10 @@ List<SingleChildWidget> get devProviders {
     ChangeNotifierProvider<PlayerState>(create: (_) => PlayerState()),
 
     // 3 - Inject the  app setting state
-    ChangeNotifierProvider<AppSettingsState>(create: (_) => AppSettingsState()),
+    ChangeNotifierProvider<AppSettingsState>(create: (context) => AppSettingsState(context.read<AppSettingsRepositoryMock>())),
+
+    // 4 - Inject App Settings Repository
+    Provider<AppSettingsRepositoryMock>(create: (_)=>AppSettingsRepositoryMock())
   ];
 }
 

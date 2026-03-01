@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:practice/data/repositories/Setting/appSetting_repository_mock.dart';
 import 'package:practice/data/repositories/Setting/appSettings_repository.dart';
 
 import '../../model/settings/app_settings.dart';
