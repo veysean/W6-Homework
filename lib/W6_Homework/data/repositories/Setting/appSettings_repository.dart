@@ -1,4 +1,6 @@
-import 'package:practice/model/settings/app_settings.dart';
+
+
+import '../../../model/settings/app_settings.dart';
 
 abstract class AppsettingsRepository {
   Future<AppSettings> load();

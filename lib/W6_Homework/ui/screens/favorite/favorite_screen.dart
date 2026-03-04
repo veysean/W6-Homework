@@ -10,15 +10,16 @@ import '../../theme/theme.dart';
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});
 
- 
   @override
   Widget build(BuildContext context) {
-    // 1- Read the globbal song repository
+    // 1 - Read the global song repository
     SongRepository songRepository = context.read<SongRepository>();
     List<Song> songs = songRepository.fetchSongs();
- 
-    // 3 - Watch the globbal player state
-    PlayerState playerState = context.read<PlayerState>();
+
+    // 2 - Watch the global player state
+    PlayerState playerState = context.watch<PlayerState>();
+
+    // 3 - Watch the global app settings state
     AppSettingsState appSettingsState = context.watch<AppSettingsState>();
 
     return Container(
@@ -26,21 +27,28 @@ class FavoriteScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 16),
-          Text(
-            "Favorite",
-            style: AppTextStyles.heading,
-          ),
-
-          SizedBox(height: 50),
-
+          const SizedBox(height: 16),
+          Text("Favorite", style: AppTextStyles.heading),
+          const SizedBox(height: 50),
           Expanded(
             child: ListView.builder(
               itemCount: songs.length,
-              itemBuilder: (context, index) => SongTile(
-                song: songs[index],
-                isPlaying: playerState.currentSong == songs[index],
-              ),
+              itemBuilder: (context, index) {
+                final song = songs[index];
+                final isPlaying = playerState.currentSong == song;
+
+                return SongTile(
+                  song: song,
+                  isPlaying: isPlaying,
+                  onTap: () {
+                    if (isPlaying) {
+                      playerState.stop();
+                    } else {
+                      playerState.start(song);
+                    }
+                  },
+                );
+              },
             ),
           ),
         ],
@@ -54,19 +62,21 @@ class SongTile extends StatelessWidget {
     super.key,
     required this.song,
     required this.isPlaying,
+    required this.onTap,
   });
 
   final Song song;
   final bool isPlaying;
-
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: onTap,
       title: Text(song.title),
       trailing: Text(
         isPlaying ? "Playing" : "",
-        style: TextStyle(color: Colors.amber),
+        style: TextStyle(color: isPlaying ? Colors.red : Colors.amber),
       ),
     );
   }

@@ -1,5 +1,6 @@
-import 'package:practice/model/settings/app_settings.dart';
 
+
+import '../../../model/settings/app_settings.dart';
 import 'appSettings_repository.dart';
 
 class AppSettingsRepositoryMock implements AppsettingsRepository {
